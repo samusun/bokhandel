@@ -1,0 +1,48 @@
+-
+    let Lagerstatus
+
+doctype html 
+head 
+    title En bok
+    style
+        include index.css
+body
+    header
+        h1 LäsvärdaBöcker.se
+    main
+        div.bild
+            img(src= `https://image.bokus.com/images/${Bok[0].BildISBN}`)
+        div.info
+            h1 #{Bok[0].Titel} av #{Bok[0].Förnamn} #{Bok[0].Efternamn}
+            p Pris: #{Bok[0].Pris}kr
+            p Språk: #{Bok[0].Språk}
+            p Förlag: #{Bok[0].Förlag}
+            
+            div#stock
+                table
+                    tr
+                        th Butik
+                        th Lagerstatus
+                    each butik in Butiker
+                        -
+                            let Lagerstatus
+                            let x = 0
+                            for(x = 0; x < Bok.length; x++){
+                            if(butik.Namn == Bok[x].Namn){
+                            Lagerstatus = Bok[x].Antal
+                            x = 100
+                            } else {
+                            Lagerstatus = "Ej i lager"
+                            }
+                            }
+                        tr
+                            td #{butik.Namn}
+                            td #{Lagerstatus}
+    a(href=`http://localhost:3000/`) Tillbaka till startsidan
+
+    
+        
+    
+
+        
+

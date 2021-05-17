@@ -1,0 +1,27 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header h1 {
+  background-color: lightsteelblue;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+main {
+  display: flex;
+  padding: 5%;
+}
+
+div {
+  padding: 3vh;
+  background-color: rgb(253, 231, 231);
+}
+
+table {
+  width: 100%;
+  justify-content: left;
+}
