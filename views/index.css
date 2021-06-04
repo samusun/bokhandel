@@ -7,7 +7,7 @@ body {
 
 header h1 {
   background-color: lightsteelblue;
-  width: 100vw;
+  width: 40vw;
   display: flex;
   justify-content: center;
 }

@@ -32,15 +32,21 @@ app.get("/book/:ISBN", async (req, res) => {
     const connection = await sql.connect(process.env.CONNECTION);
     const result = await connection
       .request()
+      .input("ISBN", sql.NVarChar, req.params.ISBN)
       .query(
-        "select * from Böcker inner join FörfattareBöcker on Böcker.ISBN13 = FörfattareBöcker.bokID inner join Författare on FörfattareBöcker.FörfattareId = Författare.ID inner join LagerSaldo on Böcker.ISBN13 = LagerSaldo.ISBN inner join Butiker on LagerSaldo.ButiksID = Butiker.ID where ISBN13 =" +
-          req.params.ISBN
+        `select * from Böcker inner join FörfattareBöcker on Böcker.ISBN13 = FörfattareBöcker.bokID inner join Författare on FörfattareBöcker.FörfattareId = Författare.ID inner join LagerSaldo on Böcker.ISBN13 = LagerSaldo.ISBN inner join Butiker on LagerSaldo.ButiksID = Butiker.ID where ISBN13 = @ISBN`
       );
     const Butiker = await connection.request().query("select * from butiker");
-    res.render("bok.pug", {
-      Bok: result.recordset,
-      Butiker: Butiker.recordset,
-    });
+
+    if (result.recordset && result.recordset.length > 0 && Butiker.recordset) {
+      res.status(200).render("bok.pug", {
+        status: "success",
+        Bok: result.recordset,
+        Butiker: Butiker.recordset,
+      });
+    } else {
+      res.status(404).send("The book is not found!");
+    }
   } catch (ex) {
     console.log(ex);
   }
